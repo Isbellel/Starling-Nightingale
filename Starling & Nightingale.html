@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A Victorian gothic roleplay writing codex.">
+  <title>Starling &amp; Nightingale</title>
+  <style>
+    :root {
+      --forest: #1f3428;
+      --forest-deep: #101b16;
+      --moss: #526746;
+      --olive: #4b5834;
+      --sage: #798267;
+      --wine: #592d35;
+      --ink: #241e1a;
+      --paper: #eee5d1;
+      --paper-deep: #d5c8ac;
+      --line: #8f8067;
+      --muted: #665c50;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #17271e;
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    .site-shell {
+      width: min(1120px, calc(100% - 32px));
+      min-height: 100vh;
+      margin: 32px auto;
+      overflow: hidden;
+      background: var(--paper);
+      border: 1px solid #a89778;
+      box-shadow: 0 22px 70px rgba(0, 0, 0, .42);
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      min-height: 94px;
+      padding: 16px 42px;
+      color: var(--ink);
+      background: #f4eddd;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow, .edition {
+      margin: 0;
+      color: #5f584b;
+      font-family: Arial, sans-serif;
+      font-size: .62rem;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .edition { text-align: right; }
+    .monogram {
+      display: grid;
+      width: 68px;
+      height: 68px;
+      place-items: center;
+      color: var(--forest);
+      border: 1px solid var(--forest);
+      border-radius: 50%;
+      font-size: 2rem;
+      font-style: italic;
+    }
+    .monogram img { width: 48px; height: 48px; object-fit: contain; }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 430px;
+      overflow: hidden;
+      color: var(--paper);
+      background: var(--olive);
+    }
+    .hero-content { display: flex; flex-direction: column; justify-content: center; padding: clamp(42px, 7vw, 88px); max-width: 610px; }
+    .hero h1, .section-heading h2 {
+      margin: 0;
+      font-weight: normal;
+      line-height: 1;
+    }
+    .hero h1 { font-size: clamp(1.95rem, 4.5vw, 3.6rem); letter-spacing: -.035em; }
+    .hero p { max-width: 430px; margin: 20px 0 0; color: #d5d1c0; font-size: 1.05rem; }
+    .vine { margin: 0 0 13px; color: #b9c89c; font-size: 1.4rem; letter-spacing: .25em; }
+    .hero-art { display: block; width: 100%; min-height: 430px; height: 100%; color: #e2dac7; background: #697257; border: 0; border-left: 1px solid rgba(238, 229, 209, .55); object-fit: cover; object-position: center; }
+
+    .navigation { background: var(--forest); border-bottom: 1px solid var(--forest-deep); }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      padding: 0 16px;
+      overflow-x: auto;
+    }
+    [role="tab"] {
+      flex: 0 0 auto;
+      padding: 17px 22px 14px;
+      color: #d8d0bd;
+      border: 0;
+      border-bottom: 3px solid transparent;
+      background: transparent;
+      font: 700 .68rem Arial, sans-serif;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    [role="tab"]:hover, [role="tab"]:focus-visible { color: #fff9ea; outline: none; }
+    [role="tab"][aria-selected="true"] { color: #fff9ea; border-bottom-color: var(--paper-deep); }
+
+    main { padding: clamp(38px, 7vw, 76px); }
+    [role="tabpanel"][hidden] { display: none; }
+    .section-heading { max-width: 600px; margin-bottom: 38px; }
+    .kicker {
+      margin: 0 0 10px;
+      color: var(--wine);
+      font: 700 .65rem Arial, sans-serif;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .section-heading h2 { font-size: clamp(1.55rem, 3.5vw, 2.55rem); }
+    .section-heading p { margin-bottom: 0; color: var(--muted); }
+
+    .folio-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .folio {
+      min-height: 210px;
+      padding: 27px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.13);
+    }
+    .folio:nth-child(2n) { background: #e5dac4; }
+    .folio-mark { color: var(--moss); font-size: 1.5rem; }
+    .folio h3 { margin: 22px 0 7px; color: var(--forest); font-size: 1.26rem; font-weight: normal; }
+    .folio p { margin: 0; color: var(--muted); font-size: .93rem; }
+
+    .entry-links { margin: 20px 0 0; padding: 0; list-style: none; border-top: 1px solid rgba(143, 128, 103, .6); }
+    .entry-links li { border-bottom: 1px solid rgba(143, 128, 103, .45); }
+    .entry-links a { display: block; padding: 8px 0; color: var(--wine); font-size: .88rem; text-decoration: none; }
+    .entry-links a::before { content: "↗"; margin-right: 8px; color: var(--moss); }
+    .entry-links a:hover, .entry-links a:focus-visible { color: var(--forest); text-decoration: underline; }
+
+    .image-slot {
+      display: grid;
+      min-height: 210px;
+      place-items: center;
+      overflow: hidden;
+      color: #d4c9b0;
+      background: #34472f;
+      border: 1px solid #a89778;
+    }
+    .image-slot span { padding: 18px; border: 1px solid rgba(212, 201, 176, .6); font: .61rem Arial, sans-serif; letter-spacing: .12em; text-align: center; text-transform: uppercase; }
+    .image-slot img { width: 100%; height: 100%; object-fit: cover; }
+
+    .feature {
+      display: grid;
+      grid-template-columns: minmax(170px, .8fr) minmax(0, 1.2fr);
+      gap: 45px;
+      align-items: center;
+      padding: clamp(28px, 5vw, 55px);
+      background: #d9cdb4;
+      border: 1px solid var(--line);
+    }
+    .crest {
+      display: grid;
+      aspect-ratio: 1;
+      place-items: center;
+      color: #d8d0ba;
+      background: var(--forest);
+      border: 12px double #c7baa1;
+      font-size: clamp(4rem, 11vw, 7.5rem);
+    }
+    .feature h3 { margin: 0 0 12px; color: var(--wine); font-size: 2rem; font-weight: normal; line-height: 1.05; }
+    .feature p { margin: 0; color: #51483e; }
+
+    .journal { display: grid; gap: 22px; }
+    .journal-entry { display: grid; grid-template-columns: 130px 1fr; gap: 30px; padding: 27px 0; border-top: 1px solid var(--line); }
+    .journal-entry:last-child { border-bottom: 1px solid var(--line); }
+    .journal-date { color: var(--wine); font: 700 .65rem Arial, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+    .journal-entry h3 { margin: 0 0 10px; color: var(--forest); font-size: 1.55rem; font-weight: normal; }
+    .journal-entry p { max-width: 620px; margin: 0; color: var(--muted); }
+    .journal-entry .image-slot { min-height: 150px; margin: 19px 0 0; }
+
+    .character-shelf { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .character-volume { overflow: hidden; color: var(--paper); background: var(--forest); border: 1px solid #67765e; box-shadow: 5px 7px 0 var(--paper-deep); }
+    .character-volume:nth-child(2n) { background: var(--wine); }
+    .character-volume summary { list-style: none; cursor: pointer; }
+    .character-volume summary::-webkit-details-marker { display: none; }
+    .character-portrait { min-height: 255px; border: 0; }
+    .character-name { display: block; padding: 18px 20px; font-size: 1.35rem; font-style: italic; }
+    .character-name small { display: block; margin-top: 4px; color: #cbc0a7; font: .62rem Arial, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+    .character-note { padding: 0 20px 22px; color: #ded4bf; font-size: .92rem; }
+    .character-volume[open] { grid-column: span 1; outline: 3px solid var(--paper-deep); outline-offset: -8px; }
+    .read-more { display: inline-block; margin-top: 17px; padding: 8px 11px; color: var(--paper); border: 1px solid currentColor; font: 700 .62rem Arial, sans-serif; letter-spacing: .1em; text-decoration: none; text-transform: uppercase; }
+    .read-more:hover, .read-more:focus-visible { color: #fff; background: rgba(255,255,255,.13); }
+
+    .archive-list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+    .archive-list li { display: grid; grid-template-columns: 80px 1fr; gap: 20px; padding: 26px 4px; border-bottom: 1px solid var(--line); }
+    .archive-list span { color: var(--wine); font: 700 .65rem Arial, sans-serif; letter-spacing: .1em; }
+    .archive-list strong { display: block; color: var(--forest); font-size: 1.24rem; font-weight: normal; }
+    .archive-list em { display: block; margin-top: 4px; color: var(--wine); font-size: .83rem; }
+    .archive-list p { margin: 10px 0 0; color: var(--muted); font-size: .94rem; }
+
+    footer { padding: 25px 42px; color: #ded4bf; background: #38482f; font: .65rem Arial, sans-serif; letter-spacing: .13em; text-align: center; text-transform: uppercase; }
+    @media (max-width: 720px) {
+      .site-shell { width: 100%; margin: 0; border: 0; }
+      .masthead { padding: 14px 22px; min-height: 76px; }
+      .eyebrow, .edition { font-size: .52rem; }
+      .monogram { width: 52px; height: 52px; font-size: 1.5rem; }
+      .monogram img { width: 37px; height: 37px; }
+      .folio-grid { grid-template-columns: 1fr; }
+      .hero, .feature, .journal-entry { grid-template-columns: 1fr; gap: 18px; }
+      .hero-content { padding: 58px 34px; }
+      .hero-art { min-height: 270px; border-top: 1px solid rgba(238, 229, 209, .55); border-left: 0; }
+      .crest { max-width: 190px; }
+      .character-shelf { grid-template-columns: 1fr; }
+      .archive-list li { grid-template-columns: 62px 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="site-shell">
+    <header class="masthead">
+      <p class="eyebrow">Writing Journal</p>
+      <div class="monogram"><img src="starling-nightingale-logo.png" alt="Ornamental Starling and Nightingale emblem"></div>
+      <p class="edition">Starling &amp; Nightingale</p>
+    </header>
+
+    <section class="hero" aria-labelledby="site-title">
+      <div class="hero-content">
+        <h1 id="site-title">Starling &amp;<br>Nightingale</h1>
+        <p>A private record of places, persons, and peculiar events in a world kept just beyond the veil.</p>
+      </div>
+      <img class="hero-art" src="hero-painting-wide.jpg" alt="Victorian guests gathered for tea in a conservatory filled with plants">
+    </section>
+
+    <nav class="navigation" aria-label="Codex sections">
+      <div class="tabs" role="tablist" aria-label="Writing reference pages">
+        <button id="tab-world" role="tab" aria-selected="true" aria-controls="world" type="button">World</button>
+        <button id="tab-plots" role="tab" aria-selected="false" aria-controls="plots" type="button">Plots</button>
+        <button id="tab-characters" role="tab" aria-selected="false" aria-controls="characters" type="button">Characters</button>
+        <button id="tab-archive" role="tab" aria-selected="false" aria-controls="archive" type="button">Archive</button>
+      </div>
+    </nav>
+
+    <main>
+      <section id="world" role="tabpanel" aria-labelledby="tab-world">
+        <div class="section-heading">
+          <h2>World Building</h2>
+          <p>Keep the foundations of your shared world in one quiet, easy-to-find place.</p>
+        </div>
+        <div class="folio-grid">
+          <article class="folio">
+            <div class="folio-mark">✦</div><h3>Places</h3><p>Estates, cities, forests, and all the spaces between.</p>
+            <!-- Replace each # with the URL for its individual wiki entry. Add more <li> lines as needed. -->
+            <ul class="entry-links"><li><a href="world-briarwood-estate.html">The Briarwood Estate</a></li><li><a href="world-hollowmere.html">The Town of Hollowmere</a></li><li><a href="world-glasshouse.html">The Glasshouse</a></li></ul>
+          </article>
+          <article class="folio">
+            <div class="folio-mark">✦</div><h3>Houses & Orders</h3><p>Families, secret societies, courts, and other allegiances.</p>
+            <ul class="entry-links"><li><a href="world-house-vale.html">House Vale</a></li><li><a href="world-order-saint-rowan.html">The Order of Saint Rowan</a></li><li><a href="world-green-court.html">The Green Court</a></li></ul>
+          </article>
+          <article class="folio">
+            <div class="folio-mark">✦</div><h3>Customs</h3><p>Rites, rumors, etiquette, beliefs, and forbidden knowledge.</p>
+            <ul class="entry-links"><li><a href="world-mourning-etiquette.html">Mourning Etiquette</a></li><li><a href="world-winter-vigil.html">The Winter Vigil</a></li><li><a href="world-old-wives-charms.html">Old Wives' Charms</a></li></ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="plots" role="tabpanel" aria-labelledby="tab-plots" hidden>
+        <div class="section-heading"><h2>Plots & Threads</h2><p>A dated journal for active storylines, secrets, and notable developments.</p></div>
+        <!-- Copy a complete <article class="journal-entry"> block to add another plot entry. -->
+        <div class="journal">
+          <article class="journal-entry">
+            <p class="journal-date">Chapter I<br>Current</p>
+            <div><h3>A light in the west wing</h3><p>Write a short plot summary here: the present situation, the important characters involved, and the question that carries into the next scene.</p>
+              <!-- To add a painting, replace this div with: <img src="images/painting-name.jpg" alt="Describe the painting"> -->
+              <div class="image-slot"><span>Optional painting or scene image</span></div>
+            </div>
+          </article>
+          <article class="journal-entry"><p class="journal-date">Chapter II<br>Unresolved</p><div><h3>The sealed correspondence</h3><p>Use this entry for a developing thread, a piece of foreshadowing, or a plot point waiting to return.</p></div></article>
+        </div>
+      </section>
+
+      <section id="characters" role="tabpanel" aria-labelledby="tab-characters" hidden>
+        <div class="section-heading"><h2>Characters</h2><p>Select a volume to open its character note. Each volume has room for a portrait or old painting.</p></div>
+        <!-- Copy a complete <details class="character-volume"> block to add another character. -->
+        <div class="character-shelf">
+          <details class="character-volume">
+            <summary>
+              <!-- Replace this div with: <img class="character-portrait" src="images/character-name.jpg" alt="Portrait of Character Name"> -->
+              <div class="image-slot character-portrait"><span>Character portrait<br>or old painting</span></div>
+              <span class="character-name">Character Name<small>Role or title</small></span>
+            </summary>
+            <div class="character-note">Add a compact character note here: their temperament, history, major relations, and anything your writing partner should remember.<br><a class="read-more" href="character-one.html">Read More</a></div>
+          </details>
+          <details class="character-volume">
+            <summary><div class="image-slot character-portrait"><span>Character portrait<br>or old painting</span></div><span class="character-name">Character Name<small>Role or title</small></span></summary>
+            <div class="character-note">Add this character’s note here. Keep it brief enough to scan before beginning a scene.<br><a class="read-more" href="character-two.html">Read More</a></div>
+          </details>
+          <details class="character-volume">
+            <summary><div class="image-slot character-portrait"><span>Character portrait<br>or old painting</span></div><span class="character-name">Character Name<small>Role or title</small></span></summary>
+            <div class="character-note">Add this character’s note here. Use additional volumes for supporting characters as needed.<br><a class="read-more" href="character-three.html">Read More</a></div>
+          </details>
+        </div>
+      </section>
+
+      <section id="archive" role="tabpanel" aria-labelledby="tab-archive" hidden>
+        <div class="section-heading"><h2>Archive</h2><p>A growing record of completed scenes, with room to preserve what happened in each one.</p></div>
+        <!-- Copy a complete <li> block to add another archived scene. -->
+        <ul class="archive-list">
+          <li><span>001</span><div><strong>Scene title</strong><em>Date · Location · Characters</em><p>Record the essential events of the scene here. Include decisions, discoveries, changes in relationships, and anything that will be important to remember later.</p></div></li>
+          <li><span>002</span><div><strong>Scene title</strong><em>Date · Location · Characters</em><p>Add a clear synopsis here. This can be as long as you need it to be; the layout will expand with your notes.</p></div></li>
+          <li><span>003</span><div><strong>Scene title</strong><em>Date · Location · Characters</em><p>Use one entry per finished scene or chapter, then duplicate this block when the archive grows.</p></div></li>
+        </ul>
+      </section>
+    </main>
+    <footer>Prepared for private use · A record in four parts</footer>
+  </div>
+  <script>
+    const tabs = document.querySelectorAll('[role="tab"]');
+    const panels = document.querySelectorAll('[role="tabpanel"]');
+    function selectTab(tab) {
+      tabs.forEach(item => item.setAttribute('aria-selected', item === tab));
+      panels.forEach(panel => panel.hidden = panel.id !== tab.getAttribute('aria-controls'));
+    }
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => selectTab(tab));
+      tab.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        event.preventDefault();
+        const index = [...tabs].indexOf(tab);
+        const next = [...tabs][(index + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+        next.focus(); selectTab(next);
+      });
+    });
+  </script>
+</body>
+</html>
